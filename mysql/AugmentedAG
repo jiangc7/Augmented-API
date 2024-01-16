@@ -1,0 +1,87 @@
+DROP schema IF EXISTS augmentedag;
+CREATE schema augmentedag;
+USE augmentedag;
+
+/* Created by Elvis Jiang 1148594, Design the database for Augmented reality system for AgResearch, we need 4 table about
+paddock, gismesh, article, gisinfo*/
+
+CREATE TABLE `paddock` (
+  `paddockid` int NOT NULL AUTO_INCREMENT,
+  `size` int,
+  `soiltemp` double,
+  `soilmoisture` double,
+  `drymatter` double,
+  `description` varchar(200) DEFAULT NULL,
+  `icon` varchar(50) DEFAULT NULL,
+  `img` varchar(50) DEFAULT NULL,
+  `ontap` varchar(50) DEFAULT NULL,
+  `boundaryvertices` varchar(50) DEFAULT NULL,
+  `distance` double,
+  PRIMARY KEY (`paddockid`)
+);
+
+
+INSERT INTO paddock VALUES(1,23,19.5,15.5,2300.4, 'This is description of paddock 1','Icons.rectangle_outlined','assets/images/paddock1.jpg','ontap',' [const Point(-43.58991, 172.56424),const Point(-40.58979, 172.56424),const Point(-40.58979, 177.56428),const Point(-43.58991, 177.56428)]','1000');
+INSERT INTO paddock VALUES(2,12,20.5,17.5,2100.4, 'This is description of paddock 2','Icons.rectangle_outlined','assets/images/paddock2.jpg','ontap','[const Point(-43.58991, 172.56424),const Point(-40.58979, 172.56424),const Point(-40.58979, 177.56428),const Point(-43.58991, 177.56428)]','1000');
+INSERT INTO paddock VALUES(3,33,20.5,21.5,2100.7, 'This is description of paddock 3','Icons.rectangle_outlined','assets/images/paddock3.jpg','ontap','[const Point(-43.58991, 172.56424),const Point(-40.58979, 172.56424),const Point(-40.58979, 177.56428),const Point(-43.58991, 177.56428)]','1000');
+
+
+
+CREATE TABLE `article` (
+  `articleid` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `paddockid` int,
+  `latitude` double,
+  `longtitude` double,
+  `distance` double,      
+  `description` varchar(200) DEFAULT NULL,
+  `icon` varchar(45) ,
+  `img` varchar(45) ,
+  `uri` varchar(45) ,
+  `scale` varchar(45) ,
+  `position` varchar(45) ,
+  PRIMARY KEY (`articleid`),
+  FOREIGN KEY (`paddockid`) REFERENCES `paddock` (`paddockid`)
+);
+
+CREATE TABLE `articleitem` (
+  `articleitemid` int NOT NULL AUTO_INCREMENT,
+  `articleid` int,
+  `icon` varchar(45) ,
+  `name` varchar(45) NOT NULL,
+  `value` varchar(45) ,
+  `statusColor` varchar(45) ,
+  `statusIcon` varchar(45) ,
+  PRIMARY KEY (`articleitemid`),
+  FOREIGN KEY (`articleid`) REFERENCES `article` (`articleid`)
+);
+
+CREATE TABLE `gismesh` (
+  `gismeshid` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `paddockid` int,
+  `latitude` double,
+  `longtitude` double,
+  `distance` double,      
+  `description` varchar(200) DEFAULT NULL,
+  `icon` varchar(45) ,
+  `img` varchar(45) ,
+  `uri` varchar(45) ,
+  `scale` varchar(45) ,
+  `position` varchar(45) ,
+  PRIMARY KEY (`gismeshid`),
+  FOREIGN KEY (`paddockid`) REFERENCES `paddock` (`paddockid`)
+);
+
+CREATE TABLE `gismeshitem` (
+  `gismeshitemid` int NOT NULL AUTO_INCREMENT,
+  `gismeshid` int,
+  `label` varchar(45) ,
+  `statusColor` varchar(45) ,
+  PRIMARY KEY (`gismeshitemid`),
+  FOREIGN KEY (`gismeshid`) REFERENCES `gismesh` (`gismeshid`)
+);
+
+
+
+
